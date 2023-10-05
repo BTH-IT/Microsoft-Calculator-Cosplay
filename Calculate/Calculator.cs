@@ -773,7 +773,7 @@ namespace Calculate
                     if (oneXNum == 0)
                     {
                         oneXNum = Double.Parse(removeComma(input.Text));
-                        if (displayCalculate.Text.Split(' ').Length == 2 || displayCalculate.Text.Split(' ').Length == 3)
+                        if ((displayCalculate.Text.Split(' ').Length == 2 || displayCalculate.Text.Split(' ').Length == 3) && !displayCalculate.Text.Contains("="))
                         {
                             double leftNum = Double.Parse(displayCalculate.Text.Split(' ')[0]);
                             displayCalculate.Text = leftNum + " " + operation + " " + "1/(" + oneXNum + ")";
@@ -846,7 +846,7 @@ namespace Calculate
                 if (oneXNum == 0)
                 {
                     oneXNum = Double.Parse(number);
-                    if (displayCalculate.Text.Split(' ').Length == 2 || displayCalculate.Text.Split(' ').Length == 3)
+                    if ((displayCalculate.Text.Split(' ').Length == 2 || displayCalculate.Text.Split(' ').Length == 3) && !displayCalculate.Text.Contains("="))
                     {
                         double leftNum = Double.Parse(displayCalculate.Text.Split(' ')[0]);
                         displayCalculate.Text = leftNum  + " " + operation + " " + "sqr(" + oneXNum + ")";
@@ -886,7 +886,6 @@ namespace Calculate
 
         private void sqrtBtn_Click(object sender, EventArgs e)
         {
-
             string number = removeComma(input.Text);
             if (sqrtBtn.Checked == true) return;
 
@@ -918,7 +917,7 @@ namespace Calculate
                 if (oneXNum == 0)
                 {
                     oneXNum = Double.Parse(input.Text);
-                    if (displayCalculate.Text.Split(' ').Length == 2 || displayCalculate.Text.Split(' ').Length == 3)
+                    if ((displayCalculate.Text.Split(' ').Length == 2 || displayCalculate.Text.Split(' ').Length == 3) && !displayCalculate.Text.Contains("="))
                     {
                         double leftNum = Double.Parse(displayCalculate.Text.Split(' ')[0]);
                         displayCalculate.Text = leftNum + " " + operation + " " + "√(" + oneXNum + ")";

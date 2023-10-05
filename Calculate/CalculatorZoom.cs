@@ -602,7 +602,7 @@ namespace Calculate
                     if (oneXNum == 0)
                     {
                         oneXNum = Double.Parse(removeComma(input.Text));
-                        if (displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3)
+                        if ((displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3) && !displayCalculate.Contains("="))
                         {
                             double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
                             displayCalculate = leftNum + " " + operation + " " + "1/(" + oneXNum + ")";
@@ -675,7 +675,7 @@ namespace Calculate
                 if (oneXNum == 0)
                 {
                     oneXNum = Double.Parse(number);
-                    if (displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3)
+                    if ((displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3) && !displayCalculate.Contains("="))
                     {
                         double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
                         displayCalculate = leftNum  + " " + operation + " " + "sqr(" + oneXNum + ")";
@@ -748,7 +748,7 @@ namespace Calculate
                 if (oneXNum == 0)
                 {
                     oneXNum = Double.Parse(input.Text);
-                    if (displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3)
+                    if ((displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3) && !displayCalculate.Contains("="))
                     {
                         double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
                         displayCalculate = leftNum + " " + operation + " " + "√(" + oneXNum + ")";
