@@ -15,8 +15,23 @@ namespace Calculate
 	{
 		public bool isHistorySelected = true;
 		public HistoryZoom history = new HistoryZoom();	
-		public MemoryZoom memory = new MemoryZoom();	
-		public CaculatorTab()
+		public MemoryZoom memory = new MemoryZoom();
+        private static CaculatorTab instance;
+
+        public static CaculatorTab Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new CaculatorTab();
+                }
+
+                return CaculatorTab.instance;
+            }
+            private set { CaculatorTab.instance = value; }
+        }
+        public CaculatorTab()
 		{
 			InitializeComponent();
 			history.Dock = DockStyle.Fill;

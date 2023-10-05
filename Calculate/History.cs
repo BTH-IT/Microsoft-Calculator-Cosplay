@@ -5,6 +5,21 @@ namespace Calculate
 {
     public partial class History : UserControl
     {
+        private static History instance;
+
+        public static History Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new History();
+                }
+
+                return History.instance;
+            }
+            private set { History.instance = value; }
+        }
         public History()
         {
             InitializeComponent();

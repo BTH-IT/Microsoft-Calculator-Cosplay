@@ -15,7 +15,21 @@ namespace Calculate
     {
         public Control[] MemoryCtrls;
         public System.Windows.Forms.Label label;
+        private static Memory instance;
 
+        public static Memory Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Memory();
+                }
+
+                return Memory.instance;
+            }
+            private set { Memory.instance = value; }
+        }
         public Memory()
         {
             InitializeComponent();

@@ -12,7 +12,22 @@ namespace Calculate
 {
 	public partial class HistoryZoom : UserControl
 	{
-		public HistoryZoom()
+        private static HistoryZoom instance;
+
+        public static HistoryZoom Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new HistoryZoom();
+                }
+
+                return HistoryZoom.instance;
+            }
+            private set { HistoryZoom.instance = value; }
+        }
+        public HistoryZoom()
 		{
 			InitializeComponent();
 			if (this.panel3.Controls.Count == 1)

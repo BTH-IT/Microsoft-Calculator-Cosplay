@@ -1164,6 +1164,9 @@
             this.input.Size = new System.Drawing.Size(500, 56);
             this.input.TabIndex = 6;
             this.input.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.input_KeyPress);
+            this.input.Leave += new System.EventHandler(this.input_Leave);
+            this.input.MouseDown += new System.Windows.Forms.MouseEventHandler(this.input_MouseDown);
             // 
             // CalculatorZoom
             // 

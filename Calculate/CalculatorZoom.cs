@@ -15,7 +15,8 @@ namespace Calculate
         string rightNum = "0";
         Double oneXNum = 0;
         string displayCalculate = "";
-
+        History history = History.Instance;
+        CaculatorTab calculatorTab = CaculatorTab.Instance;
         public CalculatorZoom()
         {
             InitializeComponent();
@@ -66,24 +67,46 @@ namespace Calculate
             oneXNum = 0;
             string plusOrMinusBtn = b.Name;
 
-            if (displayCalculate.Split(' ').Length == 3)
+            string newText = removeComma();
+
+            if (newText.Length >= 15) return;
+
+            if (displayCalculate.Split(' ').Length == 3 && plusOrMinusBtn != "plusOrMinusBtn")
             {
                 displayCalculate = string.Join(" ", displayCalculate.Split(' ').Reverse().Skip(1).Reverse());
             }
 
-            if ((input.Text == "0") || enter_value || string.IsNullOrEmpty(input.Text))
+            if (displayCalculate.Split(' ').Length == 4)
+            {
+                if (plusOrMinusBtn != "plusOrMinusBtn")
+                {
+                    displayCalculate = "";
+                    input.Text = generateComma(b.Text);
+                    result = Double.Parse(b.Text);
+                }
+                else
+                {
+                    displayCalculate = "negate(" + newText + ")";
+                    input.Text = generateComma((Double.Parse(newText) * -1).ToString());
+                    rightNum = "0";
+                    oneXNum = 0;
+                }
+
+                return;
+            }
+
+            if (((newText == "0") || enter_value || string.IsNullOrEmpty(newText)) && plusOrMinusBtn != "plusOrMinusBtn")
             {
                 input.Text = "0";
                 enter_value = false;
             }
 
-            if (input.Text.Equals("Cannot divide by zero"))
+            if (newText.Equals("Cannot divide by zero") || newText.Equals("Overflow") || newText.Equals("Invalid input"))
             {
-                input.Text = "0";
-                displayCalculate = "";
-                enter_value = false;
+                ischeck = true;
+                reset();
                 ischeck = false;
-                disableBtn();
+                return;
             }
 
             if (b.Text == ".")
@@ -91,31 +114,83 @@ namespace Calculate
                 if (!input.Text.Contains("."))
                     if (input.Text == "")
                         input.Text = "0";
-                input.Text += b.Text;
+                input.Text = newText + b.Text;
             }
             else if (plusOrMinusBtn == "plusOrMinusBtn")
             {
-                if (input.Text != "0")
+                string tmp;
+                if (newText != "0")
                 {
-                    if (input.Text.ToString()[0] == '-')
+                    tmp = newText.StartsWith("-") ? newText.Substring(1) : newText;
+
+                    if (displayCalculate.Split(' ').Length == 1)
                     {
-                        input.Text = string.Join("", input.Text.Skip(1).ToArray());
+                        displayCalculate = "negate(" + displayCalculate + ")";
+                        input.Text = generateComma((Double.Parse(newText) * -1).ToString());
+                        oneXNum = Double.Parse(removeComma()) * -1;
+                        rightNum = removeComma();
+                        result = oneXNum;
+                        return;
                     }
-                    else
+
+                    if (enter_input && displayCalculate.Split(' ').Length == 2)
                     {
-                        input.Text = "-" + input.Text;
+                        double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
+                        oneXNum = Double.Parse(newText) * -1;
+                        displayCalculate = leftNum + " " + operation + " " + oneXNum;
+                        input.Text = generateComma((Double.Parse(newText) * -1).ToString());
+                        rightNum = removeComma();
+                        return;
                     }
+
+                    if (displayCalculate.Split(' ').Length == 4)
+                    {
+                        displayCalculate = "negate(" + tmp + ")";
+                        result = Double.Parse(newText) * -1;
+                        input.Text = generateComma((Double.Parse(newText) * -1).ToString());
+                        rightNum = "0";
+                        oneXNum = 0;
+                        return;
+                    }
+
+
+                    if (displayCalculate.Split(' ').Length == 3)
+                    {
+                        double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
+                        string elementTwo = "negate(" + displayCalculate.Split(' ')[2] + ")";
+                        displayCalculate = leftNum + " " + operation + " " + elementTwo;
+                        oneXNum = Double.Parse(newText) * -1;
+                        input.Text = (Double.Parse(newText) * -1).ToString();
+                        rightNum = removeComma();
+                        return;
+                    }
+
+                    if (displayCalculate.Split(' ').Length == 2)
+                    {
+                        double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
+                        string elementTwo = "negate(" + tmp + ")";
+                        displayCalculate = leftNum + " " + operation + " " + elementTwo;
+                        oneXNum = (Double.Parse(newText) * -1);
+                        input.Text = (Double.Parse(newText) * -1).ToString();
+                        rightNum = removeComma();
+                        return;
+                    }
+
+                    oneXNum = Double.Parse(input.Text) * -1;
+                    input.Text = generateComma((Double.Parse(input.Text) * -1).ToString());
                 }
             }
             else
             {
-                if (input.Text == "0")
+                Console.WriteLine("123");
+                if (newText == "0")
                 {
                     input.Text = b.Text;
                 }
-                else input.Text += b.Text;
+                else input.Text = generateComma(newText + b.Text);
             }
         }
+
 
         private void operators_Click(object sender, EventArgs e)
         {
@@ -125,6 +200,8 @@ namespace Calculate
             oneXNum = 0;
             string buttonName = b.Name;
             String operation2 = "";
+            string newText = removeComma();
+
             switch (buttonName)
             {
                 case "plusBtn":
@@ -134,57 +211,54 @@ namespace Calculate
                     operation2 = "-";
                     break;
                 case "multiBtn":
-                    operation2 = "*";
+                    operation2 = "x";
                     break;
                 case "divisionBtn":
                     operation2 = "/";
                     break;
             }
 
+            operation = operation2;
+
             if (result != 0)
             {
                 if (enter_input)
                 {
                     equalBtn.PerformClick();
-                    result = Double.Parse(input.Text);
+                    result = Double.Parse(newText);
                     enter_value = true;
                     displayCalculate = result + " " + operation2;
                 }
                 else
                 {
                     enter_value = true;
-                    displayCalculate = input.Text + " " + operation2;
+                    displayCalculate = newText + " " + operation2;
                 }
             }
             else
             {
-                result = Double.Parse(input.Text);
+                result = Double.Parse(newText);
                 enter_value = true;
                 displayCalculate = result + " " + operation2;
             }
             enter_input = false;
-
-            switch (buttonName)
-            {
-                case "plusBtn":
-                    operation = "+";
-                    break;
-                case "minusBtn":
-                    operation = "-";
-                    break;
-                case "multiBtn":
-                    operation = "*";
-                    break;
-                case "divisionBtn":
-                    operation = "/";
-                    break;
-            }
-
         }
 
         private void equalBtn_Click(object sender, EventArgs e)
         {
-            string number = input.Text;
+            if (removeComma().Equals("Cannot divide by zero") || string.IsNullOrEmpty(removeComma()) || removeComma().Equals("Overflow") || removeComma().Equals("Invalid input"))
+            {
+                ischeck = false;
+                reset();
+                return;
+            }
+
+            enter_input = false;
+            enter_value = false;
+
+
+            string number = removeComma();
+
             switch (operation)
             {
                 case "+":
@@ -193,12 +267,17 @@ namespace Calculate
                         rightNum = displayCalculate.Split(' ')[2];
 
                         displayCalculate = result.ToString() + " " + operation + " " + rightNum + " =";
-                        input.Text = (result + Double.Parse(rightNum)).ToString();
+                        input.Text = generateComma((result + Double.Parse(rightNum)).ToString());
+                        history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
+                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
+
                     }
                     else
                     {
                         displayCalculate = result.ToString() + " " + operation + " " + number + " =";
-                        input.Text = (result + Double.Parse(number)).ToString();
+                        input.Text = generateComma((result + Double.Parse(number)).ToString());
+                        history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
+                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
                     }
                     break;
                 case "-":
@@ -206,37 +285,43 @@ namespace Calculate
                     {
                         rightNum = displayCalculate.Split(' ')[2];
                         displayCalculate = result.ToString() + " " + operation + " " + rightNum + " =";
-                        input.Text = (result - Double.Parse(rightNum)).ToString();
+                        input.Text = generateComma((result - Double.Parse(rightNum)).ToString());
+                        history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
+                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
                     }
                     else
                     {
                         displayCalculate = result.ToString() + " " + operation + " " + number + " =";
-                        input.Text = (result - Double.Parse(number)).ToString();
+                        input.Text = generateComma((result - Double.Parse(number)).ToString());
+                        history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
+                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
                     }
                     break;
-                case "*":
+                case "x":
                     if (displayCalculate.Split(' ').Length == 4)
                     {
                         rightNum = displayCalculate.Split(' ')[2];
                         displayCalculate = result.ToString() + " " + operation + " " + rightNum + " =";
-                        input.Text = (result * Double.Parse(rightNum)).ToString();
+                        input.Text = generateComma((result * Double.Parse(rightNum)).ToString());
+                        history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
+                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
                     }
                     else
                     {
                         displayCalculate = result.ToString() + " " + operation + " " + number + " =";
-                        input.Text = (result * Double.Parse(number)).ToString();
+                        input.Text = generateComma((result * Double.Parse(number)).ToString());
+                        history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
+                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
                     }
                     break;
                 case "/":
                     if (Double.Parse(input.Text) == 0)
                     {
-                        input.Text = "Cannot divide by zero";
-                        result = 0;
-                        operation = "";
-                        displayCalculate = "";
-                        input.Enabled = false;
                         ischeck = true;
-                        disableBtn();
+                        reset();
+                        ischeck = false;
+                        input.Text = "Cannot divide by zero";
+                        displayCalculate = "1 / (0)";
                         return;
                     }
                     else
@@ -245,60 +330,75 @@ namespace Calculate
                         {
                             rightNum = displayCalculate.Split(' ')[2];
                             displayCalculate = result.ToString() + " " + operation + " " + rightNum + " =";
-                            input.Text = (result / Double.Parse(rightNum)).ToString();
+                            input.Text = generateComma((result / Double.Parse(rightNum)).ToString());
+                            history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
+                            calculatorTab.history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma()));
                         }
                         else
                         {
                             displayCalculate = result.ToString() + " " + operation + " " + number + " =";
-                            input.Text = (result / Double.Parse(number)).ToString();
+                            input.Text = generateComma((result / Double.Parse(number)).ToString());
+                            history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
+                            calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma()));
                         }
                     }
                     break;
                 default:
+                    if (number != "")
+                    {
+                        history.addHistoryItemV2(Double.Parse(number));
+                        calculatorTab.history.addHistoryItemV2(Double.Parse(number));
+                        displayCalculate = Double.Parse(number).ToString() + " =";
+                    }
                     break;
             }
 
-            if (input.Text.Equals("Cannot divide by zero") || string.IsNullOrEmpty(input.Text))
-            {
-                input.Text = "0";
-                input.Enabled = true;
-                displayCalculate = "";
-                result = 0;
-                return;
-            }
-
-            result = Double.Parse(input.Text);
+            result = Double.Parse(removeComma());
         }
+
+        private void reset()
+        {
+            input.Text = "0";
+            displayCalculate = "";
+            operation = "";
+            result = 0;
+            rightNum = "0";
+            oneXNum = 0;
+            input.Enabled = true;
+            enter_input = false;
+            enter_value = false;
+            disableBtn();
+        }
+
 
         private void backspaceBtn_Click(object sender, EventArgs e)
         {
-            if (input.Text.Equals("Cannot divide by zero"))
+            if (removeComma().Equals("Cannot divide by zero") || input.Text == "" || removeComma().Equals("Overflow") || removeComma().Equals("Invalid input"))
             {
-                input.Text = "0";
-                displayCalculate = "";
                 ischeck = false;
-                disableBtn();
+                reset();
+                return;
             }
-            if (input.Text.Length > 0)
+            else if (input.Text.Length > 0)
             {
-                input.Text = input.Text.Remove(input.Text.Length - 1, 1);
-            }
-            if (input.Text == "")
-            {
-                input.Text = "0";
+                input.Text = generateComma(removeComma().Remove(removeComma().Length - 1, 1));
             }
         }
 
         private void clearBtn_Click(object sender, EventArgs e)
         {
-            if (input.Text.Equals("Cannot divide by zero"))
+            if (input.Text.Equals("Cannot divide by zero") || input.Text.Equals("Overflow") || input.Text.Equals("Invalid input"))
             {
+                ischeck = true;
+                reset();
                 ischeck = false;
-                disableBtn();
+                return;
             }
             input.Text = "0";
             displayCalculate = "";
             result = 0;
+            rightNum = "0";
+            oneXNum = 0;
         }
 
         private void input_MouseDown(object sender, MouseEventArgs e)
@@ -307,27 +407,75 @@ namespace Calculate
             input.Focus();
         }
 
+        private string removeComma()
+        {
+            return string.Join("", this.input.Text.Split(','));
+        }
+
+        private string generateComma(string text)
+        {
+            double tmp = Double.Parse(text);
+            Console.WriteLine(tmp);
+
+            return $"{tmp:n0}";
+        }
+
         private void input_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            string newInput = removeComma();
+            if (newInput.Length >= 15)
+            {
+                if (e.KeyChar == (char)Keys.Back)
+                {
+                    this.input.Text = generateComma(newInput.Substring(0, newInput.Length - 1));
+                }
+                else
+                {
+                    e.Handled = true;
+                }
+                return;
+            }
+
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != '.')
             {
                 e.Handled = true;
             }
             else
             {
-                if (this.input.Text.Equals("0"))
+                e.Handled = true;
+
+                if (e.KeyChar == '.' && newInput.Contains("."))
                 {
-                    this.input.Text = "0";
+                    return;
                 }
 
-                e.Handled = true;
+                if (newInput.Length >= 1)
+                {
+                    if (newInput.ToString()[0] == '0' && e.KeyChar != '.')
+                    {
+                        if (newInput.Length >= 2)
+                        {
+                            if (newInput.ToString()[1] == '.')
+                            {
+                                this.input.Text = generateComma(newInput + e.KeyChar.ToString());
+                                return;
+                            }
+                        }
+                        this.input.Text = e.KeyChar.ToString();
+                        return;
+                    }
+
+
+                }
+
+
                 if (e.KeyChar != (char)Keys.Back)
                 {
-                    this.input.Text += e.KeyChar;
+                    this.input.Text = generateComma(newInput + e.KeyChar.ToString()); ;
                 }
                 else
                 {
-                    this.input.Text = this.input.Text.Substring(0, this.input.Text.Length - 1);
+                    this.input.Text = generateComma(newInput.Substring(0, newInput.Length - 1));
                 }
             }
         }
@@ -386,32 +534,30 @@ namespace Calculate
 
         private void oneXBtn_Click(object sender, EventArgs e)
         {
-            string number = input.Text;
+            string number = removeComma();
             if (oneXBtn.Checked == true) return;
 
-            if (Double.Parse(input.Text) == 0)
+            if (Double.Parse(number) == 0)
             {
+                ischeck = true;
+                reset();
                 input.Text = "Cannot divide by zero";
                 displayCalculate = result.ToString() + " / (0)";
-                result = 0;
-                operation = "";
-                input.Enabled = false;
-                ischeck = true;
-                disableBtn();
+                ischeck = false;
                 return;
             }
             else
             {
                 if (displayCalculate.Split(' ').Length == 4)
                 {
-                    displayCalculate = "1/(" + input.Text + ")";
-                    input.Text = (1 / Double.Parse(input.Text)).ToString();
+                    displayCalculate = "1/(" + number + ")";
+                    input.Text = generateComma((1 / Double.Parse(number)).ToString());
                 }
                 else
                 {
                     if (oneXNum == 0)
                     {
-                        oneXNum = Double.Parse(input.Text);
+                        oneXNum = Double.Parse(number);
                         if (displayCalculate.Split(' ').Length == 2)
                         {
                             double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
@@ -421,7 +567,7 @@ namespace Calculate
                         {
                             displayCalculate = "1/(" + oneXNum + ")";
                         }
-                        input.Text = (1 / oneXNum).ToString();
+                        input.Text = generateComma((1 / oneXNum).ToString());
                     }
                     else
                     {
@@ -431,41 +577,48 @@ namespace Calculate
                             string elementTwo = "1/(" + displayCalculate.Split(' ')[2] + ")";
                             displayCalculate = leftNum + " " + operation + " " + elementTwo;
 
-                            input.Text = (1 / Double.Parse(rightNum)).ToString();
+                            input.Text = generateComma((1 / Double.Parse(rightNum)).ToString());
                         }
                         else
                         {
                             displayCalculate = "1/(" + displayCalculate + ")";
-                            input.Text = (1 / Double.Parse(rightNum)).ToString();
+                            input.Text = generateComma((1 / Double.Parse(rightNum)).ToString());
                         }
                     }
                 }
-                rightNum = input.Text;
+                rightNum = removeComma();
             }
         }
 
         private void x2Btn_Click(object sender, EventArgs e)
         {
-            string number = input.Text;
+            string number = removeComma();
             if (x2Btn.Checked == true) return;
-            if (double.IsInfinity(Math.Pow(Double.Parse(input.Text), 2)))
+
+            if (double.IsInfinity(Math.Pow(Double.Parse(number), 2)))
             {
                 input.Text = "Overflow";
+                input.Enabled = false;
                 ischeck = true;
+                enter_value = false;
+                enter_input = false;
+                result = 0;
+                rightNum = "0";
+                oneXNum = 0;
                 disableBtn();
-
+                ischeck = false;
                 return;
             }
             if (displayCalculate.Split(' ').Length == 4)
             {
-                displayCalculate = "sqr(" + input.Text + ")";
-                input.Text = Math.Pow(Double.Parse(input.Text), 2).ToString();
+                displayCalculate = "sqr(" + number + ")";
+                input.Text = generateComma(Math.Pow(Double.Parse(number), 2).ToString());
             }
             else
             {
                 if (oneXNum == 0)
                 {
-                    oneXNum = Double.Parse(input.Text);
+                    oneXNum = Double.Parse(number);
                     if (displayCalculate.Split(' ').Length == 2)
                     {
                         double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
@@ -475,7 +628,7 @@ namespace Calculate
                     {
                         displayCalculate = "sqr(" + oneXNum + ")";
                     }
-                    input.Text = Math.Pow(oneXNum, 2).ToString();
+                    input.Text = generateComma(Math.Pow(oneXNum, 2).ToString());
                 }
                 else
                 {
@@ -484,45 +637,73 @@ namespace Calculate
                         double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
                         string elementTwo = "sqr(" + displayCalculate.Split(' ')[2] + ")";
                         displayCalculate = leftNum + " " + operation + " " + elementTwo;
-
-                        input.Text = Math.Pow(Double.Parse(rightNum), 2).ToString();
                     }
                     else
                     {
                         displayCalculate = "sqr(" + displayCalculate + ")";
-                        input.Text = Math.Pow(Double.Parse(rightNum), 2).ToString();
                     }
+                    input.Text = generateComma(Math.Pow(Double.Parse(rightNum), 2).ToString());
                 }
-                rightNum = input.Text;
+                rightNum = removeComma();
             }
         }
 
         private void sqrtBtn_Click(object sender, EventArgs e)
         {
 
-            string number = input.Text;
+            string number = removeComma();
             if (sqrtBtn.Checked == true) return;
 
+            if (double.Parse(number) < 0)
+            {
+                if (displayCalculate.Split(' ').Length == 2)
+                {
+                    displayCalculate = displayCalculate.Split(' ')[0] + " " + operation + " " + "√(" + number + ")";
+                }
+                else if (displayCalculate.Split(' ').Length == 3)
+                {
+                    string elementTwo = "√(" + displayCalculate.Split(' ')[2] + ")";
+                    displayCalculate = displayCalculate.Split(' ')[0] + " " + operation + " " + elementTwo;
+                }
+                else
+                {
+                    displayCalculate = "√(" + number + ")";
+                }
+
+                input.Text = "Invalid input";
+                input.Enabled = false;
+                ischeck = true;
+                enter_value = false;
+                enter_input = false;
+                result = 0;
+                rightNum = "0";
+                oneXNum = 0;
+                disableBtn();
+                ischeck = false;
+                return;
+            }
             if (displayCalculate.Split(' ').Length == 4)
             {
-                displayCalculate = "√(" + input.Text + ")";
-                input.Text = Math.Sqrt(Double.Parse(input.Text)).ToString();
+                displayCalculate = "√(" + number + ")";
+                input.Text = generateComma(Math.Sqrt(Double.Parse(number)).ToString());
             }
             else
             {
+
                 if (oneXNum == 0)
                 {
-                    oneXNum = Double.Parse(input.Text);
-                    if (displayCalculate.Split(' ').Length == 2)
+                    oneXNum = Double.Parse(number);
+                    if (displayCalculate.Split(' ').Length == 2 || displayCalculate.Split(' ').Length == 3)
                     {
                         double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
-                        displayCalculate = displayCalculate.Split(' ')[0] + " " + operation + " " + "√(" + oneXNum + ")";
+                        displayCalculate = leftNum + " " + operation + " " + "√(" + oneXNum + ")";
                     }
                     else
                     {
                         displayCalculate = "√(" + oneXNum + ")";
                     }
-                    input.Text = Math.Sqrt(oneXNum).ToString();
+
+                    input.Text = generateComma(Math.Sqrt(oneXNum).ToString());
                 }
                 else
                 {
@@ -531,25 +712,15 @@ namespace Calculate
                         double leftNum = Double.Parse(displayCalculate.Split(' ')[0]);
                         string elementTwo = "√(" + displayCalculate.Split(' ')[2] + ")";
                         displayCalculate = leftNum + " " + operation + " " + elementTwo;
-
-                        input.Text = Math.Sqrt(Double.Parse(rightNum)).ToString();
+                        input.Text = generateComma(Math.Sqrt(Double.Parse(rightNum)).ToString());
                     }
                     else
                     {
                         displayCalculate = "√(" + displayCalculate + ")";
-                        input.Text = Math.Sqrt(Double.Parse(rightNum)).ToString();
+                        input.Text = generateComma(Math.Sqrt(Double.Parse(rightNum)).ToString());
                     }
                 }
-                rightNum = input.Text;
-            }
-        }
-
-        private void clearInputBtn_Click(object sender, EventArgs e)
-        {
-            input.Text = "0";
-            if (displayCalculate.Split(' ').Length == 4)
-            {
-                displayCalculate = "";
+                rightNum = removeComma();
             }
         }
 
@@ -559,11 +730,13 @@ namespace Calculate
 
             if (displayCalculate.Split(' ').Length == 2)
             {
-                rightNum = input.Text;
+                rightNum = removeComma();
 
-                input.Text = (Convert.ToDouble(input.Text) / 100 * Convert.ToDouble(input.Text)).ToString();
+                input.Text = generateComma((Convert.ToDouble(removeComma()) / 100 * Convert.ToDouble(displayCalculate.Split(' ')[0])).ToString());
 
-                displayCalculate = result + " " + operation + " " + Convert.ToDouble(input.Text).ToString();
+                displayCalculate = result + " " + operation + " " + Convert.ToDouble(removeComma()).ToString();
+
+                oneXNum = 0;
 
                 if (displayCalculate.Split(' ').Length == 4)
                 {
@@ -575,10 +748,11 @@ namespace Calculate
 
             if (displayCalculate.Split(' ').Length == 3)
             {
-                input.Text = (Convert.ToDouble(rightNum) / 100 * Convert.ToDouble(input.Text)).ToString();
+                input.Text = generateComma((Convert.ToDouble(rightNum) / 100 * Convert.ToDouble(removeComma())).ToString());
 
+                displayCalculate = result + " " + operation + " " + Convert.ToDouble(removeComma()).ToString();
 
-                displayCalculate = result + " " + operation + " " + Convert.ToDouble(input.Text).ToString();
+                oneXNum = 0;
 
                 if (displayCalculate.Split(' ').Length == 4)
                 {
@@ -590,7 +764,7 @@ namespace Calculate
 
             if (displayCalculate.Split(' ').Length == 4)
             {
-                input.Text = (Convert.ToDouble(input.Text) / 100 * Convert.ToDouble(input.Text)).ToString();
+                input.Text = generateComma((Convert.ToDouble(removeComma()) / 100 * Convert.ToDouble(removeComma())).ToString());
 
                 rightNum = "0";
 
@@ -599,19 +773,69 @@ namespace Calculate
                 return;
             }
 
-            if (displayCalculate.Split(' ').Length == 1 && string.IsNullOrEmpty(displayCalculate))
+            if (displayCalculate.Split(' ').Length == 1 || string.IsNullOrEmpty(displayCalculate))
             {
                 input.Text = "0";
                 displayCalculate = "0";
             }
             else
             {
-                input.Text = (Convert.ToDouble(input.Text) / 100 * Convert.ToDouble(input.Text)).ToString();
+                input.Text = (Convert.ToDouble(removeComma()) / 100 * Convert.ToDouble(removeComma())).ToString();
 
-                displayCalculate = input.Text.ToString();
-                result = Convert.ToDouble(input.Text);
+                displayCalculate = removeComma();
+                result = Convert.ToDouble(removeComma());
             }
+            oneXNum = 0;
             rightNum = "0";
+        }
+
+        private void clearInputBtn_Click(object sender, EventArgs e)
+        {
+            if (removeComma().Equals("Cannot divide by zero") || removeComma().Equals("Overflow") || removeComma().Equals("Invalid input"))
+            {
+                ischeck = true;
+                reset();
+                ischeck = false;
+            }
+            input.Text = "0";
+            if (displayCalculate.Split(' ').Length == 4)
+            {
+                displayCalculate = "";
+            }
+
+        }
+
+        private void input_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(removeComma()))
+            {
+                ischeck = true;
+                reset();
+                ischeck = false;
+            }
+        }
+
+        public void synchronizeHistoryWhenDelete(string senderName, int mode = 0, string operation = "", string result = "")
+        {
+            // mode = 0 => xóa hết toàn bộ , mode = 1 xóa 1 item
+            if (mode == 0)
+            {
+                if (senderName == typeof(History).Name)
+                {
+                    calculatorTab.history.ClearAllItem();
+                }
+                else
+                if (senderName == typeof(HistoryZoom).Name)
+                {
+                    history.ClearAllItems();
+                }
+            }
+            else if (mode == 1)
+            {
+                history.DeleteOneItem(operation, result);
+                calculatorTab.history.DeleteOneItem(operation, result);
+            }
+
         }
     }
 }

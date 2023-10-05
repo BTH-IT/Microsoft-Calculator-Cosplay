@@ -14,6 +14,21 @@ namespace Calculate
     {
         public Control[] MemoryCtrls;
         public Label label;
+        private static MemoryZoom instance;
+
+        public static MemoryZoom Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MemoryZoom();
+                }
+
+                return MemoryZoom.instance;
+            }
+            private set { MemoryZoom.instance = value; }
+        }
 
         public MemoryZoom()
         {

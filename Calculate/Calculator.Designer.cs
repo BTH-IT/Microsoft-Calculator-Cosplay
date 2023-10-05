@@ -75,12 +75,12 @@
             this.leftPanel = new System.Windows.Forms.Panel();
             this.sidebarChild = new Guna.UI.WinForms.GunaShadowPanel();
             this.gunaAdvenceButton2 = new Guna.UI.WinForms.GunaAdvenceButton();
-            this.sidebarItem1 = new Calculate.SidebarItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.memoryCheck = new System.Windows.Forms.Timer(this.components);
+            this.sidebarItem1 = new Calculate.SidebarItem();
             this.test.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -1115,7 +1115,7 @@
             this.openMemoryBtn.DialogResult = System.Windows.Forms.DialogResult.None;
             this.openMemoryBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.openMemoryBtn.FocusedColor = System.Drawing.Color.Empty;
-            this.openMemoryBtn.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openMemoryBtn.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.openMemoryBtn.ForeColor = System.Drawing.Color.Black;
             this.openMemoryBtn.Image = ((System.Drawing.Image)(resources.GetObject("openMemoryBtn.Image")));
             this.openMemoryBtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -1152,7 +1152,7 @@
             this.msBtn.DialogResult = System.Windows.Forms.DialogResult.None;
             this.msBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.msBtn.FocusedColor = System.Drawing.Color.Empty;
-            this.msBtn.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.msBtn.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.msBtn.ForeColor = System.Drawing.Color.Black;
             this.msBtn.Image = null;
             this.msBtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1190,7 +1190,7 @@
             this.mMinusBtn.DialogResult = System.Windows.Forms.DialogResult.None;
             this.mMinusBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mMinusBtn.FocusedColor = System.Drawing.Color.Empty;
-            this.mMinusBtn.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mMinusBtn.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mMinusBtn.ForeColor = System.Drawing.Color.Black;
             this.mMinusBtn.Image = null;
             this.mMinusBtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1228,7 +1228,7 @@
             this.mPlusBtn.DialogResult = System.Windows.Forms.DialogResult.None;
             this.mPlusBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mPlusBtn.FocusedColor = System.Drawing.Color.Empty;
-            this.mPlusBtn.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mPlusBtn.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mPlusBtn.ForeColor = System.Drawing.Color.Black;
             this.mPlusBtn.Image = null;
             this.mPlusBtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1266,7 +1266,7 @@
             this.mrBtn.DialogResult = System.Windows.Forms.DialogResult.None;
             this.mrBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mrBtn.FocusedColor = System.Drawing.Color.Empty;
-            this.mrBtn.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mrBtn.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mrBtn.ForeColor = System.Drawing.Color.Black;
             this.mrBtn.Image = null;
             this.mrBtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1304,7 +1304,7 @@
             this.mcBtn.DialogResult = System.Windows.Forms.DialogResult.None;
             this.mcBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mcBtn.FocusedColor = System.Drawing.Color.Empty;
-            this.mcBtn.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mcBtn.Font = new System.Drawing.Font("Calibri", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mcBtn.ForeColor = System.Drawing.Color.Black;
             this.mcBtn.Image = null;
             this.mcBtn.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1331,7 +1331,7 @@
             this.input.BackColor = System.Drawing.Color.Transparent;
             this.input.BorderColor = System.Drawing.Color.Transparent;
             this.input.BorderThickness = 0;
-            this.input.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.input.Cursor = System.Windows.Forms.Cursors.Default;
             this.input.DefaultText = "0";
             this.input.DisabledState.BorderColor = System.Drawing.Color.Transparent;
             this.input.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
@@ -1418,7 +1418,7 @@
             this.menuIcon.ForeColor = System.Drawing.Color.White;
             this.menuIcon.Image = ((System.Drawing.Image)(resources.GetObject("menuIcon.Image")));
             this.menuIcon.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.menuIcon.ImageSize = new System.Drawing.Size(20, 20);
+            this.menuIcon.ImageSize = new System.Drawing.Size(15, 15);
             this.menuIcon.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(58)))), ((int)(((byte)(170)))));
             this.menuIcon.Location = new System.Drawing.Point(10, 7);
             this.menuIcon.Name = "menuIcon";
@@ -1582,16 +1582,6 @@
             this.gunaAdvenceButton2.TabIndex = 12;
             this.gunaAdvenceButton2.Click += new System.EventHandler(this.gunaAdvenceButton2_Click);
             // 
-            // sidebarItem1
-            // 
-            this.sidebarItem1.BackColor = System.Drawing.Color.Transparent;
-            this.sidebarItem1.BaseColor = System.Drawing.Color.Empty;
-            this.sidebarItem1.Location = new System.Drawing.Point(18, 107);
-            this.sidebarItem1.Margin = new System.Windows.Forms.Padding(2);
-            this.sidebarItem1.Name = "sidebarItem1";
-            this.sidebarItem1.Size = new System.Drawing.Size(172, 47);
-            this.sidebarItem1.TabIndex = 6;
-            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
@@ -1633,6 +1623,16 @@
             // 
             this.memoryCheck.Enabled = true;
             this.memoryCheck.Tick += new System.EventHandler(this.memoryCheck_Tick);
+            // 
+            // sidebarItem1
+            // 
+            this.sidebarItem1.BackColor = System.Drawing.Color.Transparent;
+            this.sidebarItem1.BaseColor = System.Drawing.Color.Empty;
+            this.sidebarItem1.Location = new System.Drawing.Point(18, 107);
+            this.sidebarItem1.Margin = new System.Windows.Forms.Padding(2);
+            this.sidebarItem1.Name = "sidebarItem1";
+            this.sidebarItem1.Size = new System.Drawing.Size(172, 47);
+            this.sidebarItem1.TabIndex = 6;
             // 
             // Calculator
             // 
@@ -1708,6 +1708,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel5;
         private Guna.UI.WinForms.GunaAdvenceButton gunaAdvenceButton2;
+        private System.Windows.Forms.Timer memoryCheck;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private Guna.UI.WinForms.GunaAdvenceButton openMemoryBtn;
         private Guna.UI.WinForms.GunaAdvenceButton msBtn;
@@ -1715,6 +1716,5 @@
         private Guna.UI.WinForms.GunaAdvenceButton mPlusBtn;
         private Guna.UI.WinForms.GunaAdvenceButton mrBtn;
         private Guna.UI.WinForms.GunaAdvenceButton mcBtn;
-        private System.Windows.Forms.Timer memoryCheck;
     }
 }
