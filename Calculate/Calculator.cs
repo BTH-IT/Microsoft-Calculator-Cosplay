@@ -133,12 +133,17 @@ namespace Calculate
                     sidebarExpand = false;
                     sidebarTransition.Stop();
                     overlaySidebar.Hide();
+
+                    this.mrBtn.Visible = true;
+                    this.mcBtn.Visible = true;
                 }
             }
             else
             {
                 sidebarChild.Width += 20;
-                if (sidebarChild.Width >= 200)
+                this.mrBtn.Visible = false;
+                this.mcBtn.Visible = false;
+                if (sidebarChild.Width >= 240)
                 {
                     sidebarExpand = true;
                     sidebarTransition.Stop();
