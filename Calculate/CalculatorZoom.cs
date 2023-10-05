@@ -74,7 +74,14 @@ namespace Calculate
                 disableBtn();
             }
 
-            if (removeComma(input.Text.Split('.')[0]).Length >= 15) return;
+            if (removeComma(input.Text.Split('.')[0]).Length >= 15)
+            {
+                if (enter_value)
+                {
+                    this.input.Text = b.Text;
+                }
+                return;
+            }
 
             oneXNum = 0;
             string plusOrMinusBtn = b.Name;
@@ -453,8 +460,12 @@ namespace Calculate
 
         private void input_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (removeComma(input.Text).Length >= 15 && e.KeyChar != (char)Keys.Back)
+            if (removeComma(input.Text).Split('.')[0].Length >= 15 && e.KeyChar != (char)Keys.Back)
             {
+                if (enter_value)
+                {
+                    this.input.Text = e.KeyChar.ToString();
+                }
                 e.Handled = true;
                 return;
             }
