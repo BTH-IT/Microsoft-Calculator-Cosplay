@@ -75,12 +75,12 @@
             this.leftPanel = new System.Windows.Forms.Panel();
             this.sidebarChild = new Guna.UI.WinForms.GunaShadowPanel();
             this.gunaAdvenceButton2 = new Guna.UI.WinForms.GunaAdvenceButton();
+            this.sidebarItem1 = new Calculate.SidebarItem();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.memoryCheck = new System.Windows.Forms.Timer(this.components);
-            this.sidebarItem1 = new Calculate.SidebarItem();
             this.test.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -1582,6 +1582,16 @@
             this.gunaAdvenceButton2.TabIndex = 12;
             this.gunaAdvenceButton2.Click += new System.EventHandler(this.gunaAdvenceButton2_Click);
             // 
+            // sidebarItem1
+            // 
+            this.sidebarItem1.BackColor = System.Drawing.Color.Transparent;
+            this.sidebarItem1.BaseColor = System.Drawing.Color.Empty;
+            this.sidebarItem1.Location = new System.Drawing.Point(18, 107);
+            this.sidebarItem1.Margin = new System.Windows.Forms.Padding(2);
+            this.sidebarItem1.Name = "sidebarItem1";
+            this.sidebarItem1.Size = new System.Drawing.Size(172, 47);
+            this.sidebarItem1.TabIndex = 6;
+            // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
@@ -1623,16 +1633,6 @@
             // 
             this.memoryCheck.Enabled = true;
             this.memoryCheck.Tick += new System.EventHandler(this.memoryCheck_Tick);
-            // 
-            // sidebarItem1
-            // 
-            this.sidebarItem1.BackColor = System.Drawing.Color.Transparent;
-            this.sidebarItem1.BaseColor = System.Drawing.Color.Empty;
-            this.sidebarItem1.Location = new System.Drawing.Point(18, 107);
-            this.sidebarItem1.Margin = new System.Windows.Forms.Padding(2);
-            this.sidebarItem1.Name = "sidebarItem1";
-            this.sidebarItem1.Size = new System.Drawing.Size(172, 47);
-            this.sidebarItem1.TabIndex = 6;
             // 
             // Calculator
             // 
