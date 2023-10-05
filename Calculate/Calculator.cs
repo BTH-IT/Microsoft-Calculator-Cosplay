@@ -401,7 +401,7 @@ namespace Calculate
                     } else
                     {
                         enter_value = true;
-                        displayCalculate.Text = input.Text + " " + operation2;
+                        displayCalculate.Text = removeComma(input.Text) + " " + operation2;
                     }
                 }
             }
@@ -443,7 +443,6 @@ namespace Calculate
                     if (displayCalculate.Text.Split(' ').Length == 4)
                     {
                         rightNum = displayCalculate.Text.Split(' ')[2];
-
                         displayCalculate.Text = result.ToString() + " " + operation + " " + rightNum + " =";
                         input.Text = generateComma((result + Double.Parse(rightNum)).ToString());
                         history.addHistoryItem(result, operation, Double.Parse(rightNum), Double.Parse(removeComma(input.Text)));
@@ -451,10 +450,10 @@ namespace Calculate
                     }
                     else
                     {
-                        displayCalculate.Text = result.ToString() + " " + operation + " " + number + " =";
-                        input.Text = generateComma((result + Double.Parse(number)).ToString());
-                        history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
-                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                        displayCalculate.Text = displayCalculate.Text.Split(' ')[0].ToString() + " " + operation + " " + number + " =";
+                        input.Text = generateComma((Double.Parse(displayCalculate.Text.Split(' ')[0]) + Double.Parse(number)).ToString());
+                        history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                        calculatorTab.history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
                     }
                     break;
                 case "-":
@@ -468,10 +467,10 @@ namespace Calculate
                     }
                     else
                     {
-                        displayCalculate.Text = result.ToString() + " " + operation + " " + number + " =";
-                        input.Text = (result - Double.Parse(number)).ToString();
-                        history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
-                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                        displayCalculate.Text = displayCalculate.Text.Split(' ')[0].ToString() + " " + operation + " " + number + " =";
+                        input.Text = generateComma((Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()) + Double.Parse(number)).ToString());
+                        history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                        calculatorTab.history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
                     }
                     break;
                 case "x":
@@ -485,10 +484,10 @@ namespace Calculate
                     }
                     else
                     {
-                        displayCalculate.Text = result.ToString() + " " + operation + " " + number + " =";
-                        input.Text = generateComma((result * Double.Parse(number)).ToString());
-                        history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
-                        calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                        displayCalculate.Text = displayCalculate.Text.Split(' ')[0].ToString() + " " + operation + " " + number + " =";
+                        input.Text = generateComma((Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()) * Double.Parse(number)).ToString());
+                        history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                        calculatorTab.history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
                     }
                     break;
                 case "/":
@@ -519,10 +518,10 @@ namespace Calculate
                         }
                         else
                         {
-                            displayCalculate.Text = result.ToString() + " " + operation + " " + number + " =";
-                            input.Text = generateComma((result / Double.Parse(number)).ToString());
-                            history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
-                            calculatorTab.history.addHistoryItem(result, operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                            displayCalculate.Text = displayCalculate.Text.Split(' ')[0].ToString() + " " + operation + " " + number + " =";
+                            input.Text = generateComma((Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()) / Double.Parse(number)).ToString());
+                            history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
+                            calculatorTab.history.addHistoryItem(Double.Parse(displayCalculate.Text.Split(' ')[0].ToString()), operation, Double.Parse(number), Double.Parse(removeComma(input.Text)));
                         }
                     }
                     break;
@@ -617,6 +616,7 @@ namespace Calculate
                 return;
             }
             input.Text = "0";
+            operation = "";
             displayCalculate.Text = "";
             result = 0;
             rightNum = "0";
